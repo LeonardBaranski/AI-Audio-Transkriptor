@@ -5,12 +5,13 @@ from flask_cors import CORS
 
 
 app = Flask(__name__)
-CORS(app, resources=r"/ai")
+CORS(app)
 
-@app.route("/receive", methods=['post'])
+@app.route("/receive", methods=['POST'])
 def form():
     files = request.files
-    file = files.get('file')
+    filetype = type(files.getlist("audio")[0])
+    file = files.getlist("audio")[0]
     print(file)
 
     return "file"
