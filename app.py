@@ -17,11 +17,11 @@ def form():
     files = request.files
     filetype = type(files.getlist("audio")[0])
     file = files.getlist("audio")[0]
-    print(files, filetype)
+    #print(files, filetype)
     #npimg = np.fromstring(file.read(), np.float32)
     #print(npimg)
     file.save("test.wav")
-    audio_file = file.read()
+    #audio_file = file.read()
     #transcribe_audio(audio_file)
     #print(audio_file)
     #return "file"
@@ -44,7 +44,7 @@ def form():
 
     #load_audio(file.read())
     transcribe_audio()
-    return "ok"
+    return request
 def load_audio(file:(bytes), sr: int = 16000):
     """
     Open an audio file and read as mono waveform, resampling as necessary
@@ -90,4 +90,8 @@ def transcribe_audio():
     result = model.transcribe("test.wav", fp16=False)
 
     print(result["text"])
+
+    with open("transcript.txt", "w") as text_file:
+        text_file.write(result["text"])
+
     return result["text"]
