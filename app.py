@@ -1,12 +1,7 @@
-import whisper
-import json, sys, os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import numpy as np
-import pydub
-import ffmpeg
-from scipy.io.wavfile import write
-import wave
+import paramiko
+from scp import SCPClient
 
 
 app = Flask(__name__)
@@ -44,54 +39,31 @@ def form():
 
     #load_audio(file.read())
     transcribe_audio()
-    return request
-def load_audio(file:(bytes), sr: int = 16000):
-    """
-    Open an audio file and read as mono waveform, resampling as necessary
+    return "request"
 
-    Parameters
-    ----------
-    file: (str, bytes)
-        The audio file to open or bytes of audio file
-
-    sr: int
-        The sample rate to resample the audio if necessary
-
-    Returns
-    -------
-    A NumPy array containing the audio waveform, in float32 dtype.
-    """
-
-    if isinstance(file, bytes):
-        inp = file
-        file = 'pipe:'
-    else:
-        inp = None
-
-    try:
-        # This launches a subprocess to decode audio while down-mixing and resampling as necessary.
-        # Requires the ffmpeg CLI and `ffmpeg-python` package to be installed.
-        out, _ = (
-            ffmpeg.input(file, threads=0)
-            .output("-", format="s16le", acodec="pcm_s16le", ac=1, ar=sr)
-            .run(cmd="ffmpeg", capture_stdout=True, capture_stderr=True, input=inp)
-        )
-    except ffmpeg.Error as e:
-        raise RuntimeError(f"Failed to load audio: {e.stderr.decode()}") from e
-
-    print(np.frombuffer(out, np.int16).flatten().astype(np.float32) / 32768.0)
-
-    #transcribe_audio(np)
-    return "file"
 
 def transcribe_audio():
-    model = whisper.load_model("base.en")
+    #model = whisper.load_model("base.en")
 
-    result = model.transcribe("test.wav", fp16=False)
+    #result = model.transcribe("test.wav", fp16=False)
 
-    print(result["text"])
 
-    with open("transcript.txt", "w") as text_file:
-        text_file.write(result["text"])
 
-    return result["text"]
+    def createSSHClient(server, port, user, password):
+        client = paramiko.SSHClient()
+        client.load_system_host_keys()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        client.connect(server, port, user, password)
+        return client
+
+    ssh = createSSHClient("141.62.117.240", 22, "ai-transkriptor", "5ai-T6ra1ns!")
+    scp = SCPClient(ssh.get_transport())
+
+    print(scp.put("create.wav", remote_path="/home/ai-transkriptor/whisper"))
+
+    #print(result["text"])
+
+    #with open("transcript.txt", "w") as text_file:
+    #    text_file.write(result["text"])
+
+    return 'result["text"]'
