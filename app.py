@@ -15,7 +15,7 @@ def form():
     #print(files, filetype)
     #npimg = np.fromstring(file.read(), np.float32)
     #print(npimg)
-    file.save("test.wav")
+    file.save("audio.wav")
     #audio_file = file.read()
     #transcribe_audio(audio_file)
     #print(audio_file)
@@ -59,7 +59,7 @@ def transcribe_audio():
     ssh = createSSHClient("141.62.117.240", 22, "ai-transkriptor", "5ai-T6ra1ns!")
     scp = SCPClient(ssh.get_transport())
 
-    print(scp.put("create.wav", remote_path="/home/ai-transkriptor/whisper"))
+    print(scp.put("audio.wav", remote_path="/home/ai-transkriptor/whisper"))
 
     #print(result["text"])
 
