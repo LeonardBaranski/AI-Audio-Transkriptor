@@ -144,7 +144,7 @@ function createDownloadLink(blob) {
 	li.appendChild(link);
 	
 	//upload link
-	var upload = document.createElement('a');
+	var upload = document.createElement('button');
 	upload.href="#";
 	upload.innerHTML = "Transkript with Whisper AI";
 	upload.addEventListener("click", function(event){

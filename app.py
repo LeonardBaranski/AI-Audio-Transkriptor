@@ -38,6 +38,7 @@ def form():
     #print(np_flattened)
 
     #load_audio(file.read())
+    #print("test")
     transcribe_audio()
     return "request"
 
