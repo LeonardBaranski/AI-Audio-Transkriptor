@@ -18,6 +18,12 @@ recordButton.addEventListener("click", startRecording);
 stopButton.addEventListener("click", stopRecording);
 pauseButton.addEventListener("click", pauseRecording);
 
+var recSymbol = document.getElementById("recSymbol")
+var recDisplay = document.getElementById("recDisplay")
+var statusDisplay = document.getElementById("statusDisplay")
+var recordingTitle = document.getElementById("recording-title")
+var isRecording = false
+
 function startRecording() {
 	console.log("recordButton clicked");
 
@@ -53,7 +59,7 @@ function startRecording() {
 		audioContext = new AudioContext();
 
 		//update the format 
-		document.getElementById("formats").innerHTML="Format: 1 channel pcm @ "+audioContext.sampleRate/1000+"kHz"
+		//document.getElementById("formats").innerHTML="Format: 1 channel pcm @ "+audioContext.sampleRate/1000+"kHz"
 
 		/*  assign to gumStream for later use  */
 		gumStream = stream;
@@ -68,11 +74,15 @@ function startRecording() {
 		rec = new Recorder(input,{numChannels:1})
 
 		//start the recording process
+		isRecording = true
+		refreshIcon()
+		statusDisplay.innerHTML = "Recording..."
 		rec.record()
 
 		console.log("Recording started");
 
 	}).catch(function(err) {
+		console.log("ERROR")
 	  	//enable the record button if getUserMedia() fails
     	recordButton.disabled = false;
     	stopButton.disabled = true;
@@ -85,11 +95,17 @@ function pauseRecording(){
 	if (rec.recording){
 		//pause
 		rec.stop();
-		pauseButton.innerHTML="Resume";
+		isRecording = false
+		refreshIcon()
+		pauseButton.innerHTML="Resume &#x23EF;";
+		statusDisplay.innerHTML = "Recording paused"
 	}else{
 		//resume
 		rec.record()
-		pauseButton.innerHTML="Pause";
+		isRecording = true
+		refreshIcon()
+		pauseButton.innerHTML="Pause &#x23EF;";
+		statusDisplay.innerHTML = "Recording..."
 
 	}
 }
@@ -103,10 +119,13 @@ function stopRecording() {
 	pauseButton.disabled = true;
 
 	//reset button just in case the recording is stopped while paused
-	pauseButton.innerHTML="Pause";
+	pauseButton.innerHTML="Pause &#x23EF;";
 	
 	//tell the recorder to stop the recording
+	isRecording = false
+	refreshIcon()
 	rec.stop();
+	statusDisplay.innerHTML = ""
 
 	//stop microphone access
 	gumStream.getAudioTracks()[0].stop();
@@ -115,11 +134,19 @@ function stopRecording() {
 	rec.exportWAV(createDownloadLink);
 }
 
+
+function refreshIcon() {
+	recSymbol.classList = isRecording ? "fa fa-microphone" : "fa fa-microphone-slash"
+	recDisplay.classList = isRecording ? "isRec" : "notRec"
+}
+
+
 function createDownloadLink(blob) {
 	
 	var url = URL.createObjectURL(blob);
 	var au = document.createElement('audio');
 	var li = document.createElement('li');
+	li.classList = "recordingCollection"
 	var link = document.createElement('a');
 
 	//name of .wav file to use during upload and download (without extendion)
@@ -130,9 +157,14 @@ function createDownloadLink(blob) {
 	au.src = url;
 
 	//save to disk link
+	link.classList = "bottomButton"
 	link.href = url;
 	link.download = filename+".wav"; //download forces the browser to donwload the file using the  filename
-	link.innerHTML = "Save to disk";
+	link.innerHTML = "Save to disk ";
+
+	var downloadIcon = document.createElement("i")
+	downloadIcon.classList = "fa fa-download"
+	link.appendChild(downloadIcon)
 
 	//add the new audio element to li
 	li.appendChild(au);
@@ -141,12 +173,15 @@ function createDownloadLink(blob) {
 	li.appendChild(document.createTextNode(filename+".wav "))
 
 	//add the save to disk link to li
+	var linebreak = document.createElement("br")
+	li.appendChild(linebreak)
 	li.appendChild(link);
 	
 	//upload link
-	var upload = document.createElement('button');
+	var upload = document.createElement('a');
+	upload.classList = "bottomButton"
 	upload.href="#";
-	upload.innerHTML = "Transkript with Whisper AI";
+	upload.innerHTML = "Transcript with Whisper AI";
 	upload.addEventListener("click", function(event){
 		  /*var xhr=new XMLHttpRequest();
 		  xhr.onload=function(e) {
@@ -173,4 +208,5 @@ function createDownloadLink(blob) {
 
 	//add the li element to the ol
 	recordingsList.appendChild(li);
+	recordingTitle.classList.remove("hidden")
 }
