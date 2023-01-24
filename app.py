@@ -31,6 +31,10 @@ def transcribe_audio():
     ssh = createSSHClient("141.62.117.240", 22, "ai-transkriptor", "5ai-T6ra1ns!")
     scp = SCPClient(ssh.get_transport())
 
+    print(scp.put("language.json", remote_path="/home/ai-transkriptor/whisper"))
     print(scp.put("audio.wav", remote_path="/home/ai-transkriptor/whisper"))
+    
 
     return 'result["text"]'
+
+transcribe_audio()
