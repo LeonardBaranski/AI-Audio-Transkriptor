@@ -2,10 +2,31 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import paramiko
 from scp import SCPClient
+import json
+import time
 
 
 app = Flask(__name__)
 CORS(app)
+
+@app.route("/language", methods=["POST"])
+def set_language():
+    response = request.data
+    print(response)
+
+    if response != b"English":
+        lang = {"language": "Not English"}
+    else:
+        lang = {"language": "base.en"}
+
+    json_object = json.dumps(lang)
+    with open("language.json", "w") as json_file:
+        json_file.write(json_object)
+
+    time.sleep(0.1)
+    transcribe_audio()
+
+    return "lang"
 
 @app.route("/receive", methods=['POST'])
 def form():
@@ -15,7 +36,6 @@ def form():
 
     file.save("audio.wav")
 
-    transcribe_audio()
     return "request"
 
 
@@ -36,5 +56,3 @@ def transcribe_audio():
     
 
     return 'result["text"]'
-
-transcribe_audio()

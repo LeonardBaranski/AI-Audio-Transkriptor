@@ -176,6 +176,8 @@ function createDownloadLink(blob) {
 	var linebreak = document.createElement("br")
 	li.appendChild(linebreak)
 	li.appendChild(link);
+
+	var language = "English"
 	
 	//upload link
 	var upload = document.createElement('a');
@@ -202,7 +204,13 @@ function createDownloadLink(blob) {
 			}).then(response => response
 		).then(json => {
 			console.log(json)
-		});
+		})
+		  fetch('http://127.0.0.1:5000/language', {
+			method: "POST",
+			body: language}).then(response => response
+				).then(json2 => {
+					console.log(json2)
+				});
 	})
 	li.appendChild(document.createTextNode (" "))//add a space in between
 	li.appendChild(upload)//add the upload link to li
