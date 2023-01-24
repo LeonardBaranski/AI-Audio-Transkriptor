@@ -180,8 +180,9 @@ function createDownloadLink(blob) {
 	//upload link
 	var upload = document.createElement('a');
 	upload.classList = "bottomButton"
+	upload.id = "transcribeButton"
 	upload.href="#";
-	upload.innerHTML = "Transcript with Whisper AI";
+	upload.innerHTML = "Transcribe with Whisper AI";
 	upload.addEventListener("click", function(event){
 		  /*var xhr=new XMLHttpRequest();
 		  xhr.onload=function(e) {
