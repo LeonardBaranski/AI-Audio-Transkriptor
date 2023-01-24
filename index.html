@@ -2,23 +2,29 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>AI-Transkriptor</title>
+    <title>AI-Transcriptor</title>
     <link rel = "icon" href = "brainfavi.png" type = "image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=League Spartan' rel='stylesheet'>
     
   </head>
   <body>
-    <h1>AI-Transkriptor-Application</h1>
+    
+    <div id="title">AI-Transcriptor-Application</div>
     <div id="controls">
-  	 <button id="recordButton">Record</button>
-  	 <button id="pauseButton" disabled>Pause</button>
-  	 <button id="stopButton" disabled>Stop</button>
+  	 <button class="controlButton" id="recordButton">Record &#x23FA;</button>
+  	 <button class="controlButton" id="pauseButton" disabled>Pause &#x23EF;</button>
+  	 <button class="controlButton" id="stopButton" disabled>Stop &#x23F9;</button>
     </div>
-    <div id="formats">Format: start recording to see sample rate</div>
-  	<p><strong>Recording:</strong></p>
+    <div id="recDisplay" class="notRec"><i id="recSymbol" class="fa fa-microphone-slash" style="font-size:24px"></i></div>
+    <!-- <div id="formats">Format: start recording to see sample rate</div> -->
+    <div id="statusDisplay"></div>
+  	<p id="recording-title" class="hidden"><strong>Saved recordings:</strong></p>
   	<ol id="recordingsList"></ol>
+    <footer id="footer">&#169; AI Research WS 22/23 - Hochschule der Medien</footer>
     <!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   	<script src="js/recorder.js"></script>
