@@ -188,6 +188,7 @@ function createDownloadLink(blob) {
 
 	var language
 	var email
+	var msg_string
 	
 	//upload link
 	var upload = document.createElement('a');
@@ -201,6 +202,7 @@ function createDownloadLink(blob) {
 		//if (isEmailValid()) {
 			language = languageSelect.value ? languageSelect.value : "English"
 			email = mailInput.value
+			msg_string = language + "," + email
 			console.log("Selected language: " + language)
 			console.log("Transcript will be sent at " + email)
 			/*var xhr=new XMLHttpRequest();
@@ -225,7 +227,7 @@ function createDownloadLink(blob) {
 			)
 			fetch('http://127.0.0.1:5000/language', {
 				method: "POST",
-				body: language
+				body: msg_string
 			}).then(response => response).then(
 				json2 => {
 					console.log(json2)

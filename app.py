@@ -11,15 +11,16 @@ CORS(app)
 
 @app.route("/language", methods=["POST"])
 def set_language():
-    response = request.data
-    print(response)
+    response = request.data.decode("utf-8")
+    string_list = response.split(",")
+    print(string_list)
 
-    if response != b"English":
-        lang = {"language": "Not English"}
+    if string_list[0] != "English":
+        content = {"language": "Not English", "email": string_list[1]}
     else:
-        lang = {"language": "base.en"}
+        content = {"language": "base.en", "email": string_list[1]}
 
-    json_object = json.dumps(lang)
+    json_object = json.dumps(content)
     with open("language.json", "w") as json_file:
         json_file.write(json_object)
 
