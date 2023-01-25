@@ -27,7 +27,7 @@ def set_language():
     time.sleep(0.1)
     transcribe_audio()
 
-    return "lang"
+    return "", 200
 
 @app.route("/receive", methods=['POST'])
 def form():
@@ -37,7 +37,7 @@ def form():
 
     file.save("audio.wav")
 
-    return "request"
+    return "", 200
 
 
 def transcribe_audio():

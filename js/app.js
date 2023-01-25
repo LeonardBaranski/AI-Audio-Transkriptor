@@ -198,8 +198,8 @@ function createDownloadLink(blob) {
 	upload.innerHTML = "Transcribe with Whisper AI";
 	upload.addEventListener("click", function(event){
 		// Wenn Email implementiert ist, unteres if Statement mit auskommentierten tauschen
-		if (true) {
-		//if (isEmailValid()) {
+		//if (true) {
+		if (isEmailValid()) {
 			language = languageSelect.value ? languageSelect.value : "English"
 			email = mailInput.value
 			msg_string = language + "," + email
@@ -224,7 +224,7 @@ function createDownloadLink(blob) {
 				json => {
 					console.log(json)
 				}
-			)
+			).catch(error => {console.log(error)})
 			fetch('http://127.0.0.1:5000/language', {
 				method: "POST",
 				body: msg_string
@@ -232,8 +232,8 @@ function createDownloadLink(blob) {
 				json2 => {
 					console.log(json2)
 				}
-			);
-			transcribeStatus.innerHTML = "Your transcription is in process!"
+			).catch(error => {console.log(error)});
+			transcribeStatus.innerHTML = "Your transcription is in progress!"
 		} else {
 			console.log("Entered Email is not valid")
 			transcribeStatus.innerHTML = "Entered email is not valid."
