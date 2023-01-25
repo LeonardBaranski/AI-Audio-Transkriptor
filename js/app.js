@@ -238,6 +238,7 @@ function createDownloadLink(blob) {
 			console.log("Entered Email is not valid")
 			transcribeStatus.innerHTML = "Entered email is not valid."
 		}
+		transcribeStatus.classList.add("hidden")
 		transcribeStatus.classList.remove("hidden")
 	})
 	li.appendChild(document.createTextNode (" "))//add a space in between
