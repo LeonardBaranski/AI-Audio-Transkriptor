@@ -10,8 +10,11 @@ var AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext //audio context to help us record
 
 var recordButton = document.getElementById("recordButton");
+recordButton.disabled = false
 var stopButton = document.getElementById("stopButton");
+stopButton.disabled = true
 var pauseButton = document.getElementById("pauseButton");
+pauseButton.disabled = true
 
 //add events to those 2 buttons
 recordButton.addEventListener("click", startRecording);
@@ -22,6 +25,12 @@ var recSymbol = document.getElementById("recSymbol")
 var recDisplay = document.getElementById("recDisplay")
 var statusDisplay = document.getElementById("statusDisplay")
 var recordingTitle = document.getElementById("recording-title")
+var languageSelect = document.getElementById("languageSelect")
+languageSelect.value = "English"
+var mailInput = document.getElementById("mailInput")
+mailInput.value = ""
+var infoIcon = document.getElementById("infoIcon")
+var transcribeStatus = document.getElementById("transcribeStatus")
 var isRecording = false
 
 function startRecording() {
@@ -177,7 +186,8 @@ function createDownloadLink(blob) {
 	li.appendChild(linebreak)
 	li.appendChild(link);
 
-	var language = "English"
+	var language
+	var email
 	
 	//upload link
 	var upload = document.createElement('a');
@@ -186,31 +196,47 @@ function createDownloadLink(blob) {
 	upload.href="#";
 	upload.innerHTML = "Transcribe with Whisper AI";
 	upload.addEventListener("click", function(event){
-		  /*var xhr=new XMLHttpRequest();
-		  xhr.onload=function(e) {
-		      if(this.readyState === 4) {
-		          console.log("Server returned: ",e.target.responseText);
-		      }
-		  };
-		  var fd=new FormData();
-		  fd.append("audio_data",blob, filename);
-		  xhr.open("POST","upload.php",true);
-		  xhr.send(fd);*/
-		  var formData = new FormData();
-		  formData.append("audio", blob, filename + ".wav");
-		  fetch('http://127.0.0.1:5000/receive', {
-			method: "POST",
-			body: formData
-			}).then(response => response
-		).then(json => {
-			console.log(json)
-		})
-		  fetch('http://127.0.0.1:5000/language', {
-			method: "POST",
-			body: language}).then(response => response
-				).then(json2 => {
+		// Wenn Email implementiert ist, unteres if Statement mit auskommentierten tauschen
+		if (true) {
+		//if (isEmailValid()) {
+			language = languageSelect.value ? languageSelect.value : "English"
+			email = mailInput.value
+			console.log("Selected language: " + language)
+			console.log("Transcript will be sent at " + email)
+			/*var xhr=new XMLHttpRequest();
+			xhr.onload=function(e) {
+				if(this.readyState === 4) {
+					console.log("Server returned: ",e.target.responseText);
+				}
+			};
+			var fd=new FormData();
+			fd.append("audio_data",blob, filename);
+			xhr.open("POST","upload.php",true);
+			xhr.send(fd);*/
+			var formData = new FormData();
+			formData.append("audio", blob, filename + ".wav");
+			fetch('http://127.0.0.1:5000/receive', {
+				method: "POST",
+				body: formData
+			}).then(response => response).then(
+				json => {
+					console.log(json)
+				}
+			)
+			fetch('http://127.0.0.1:5000/language', {
+				method: "POST",
+				body: language
+			}).then(response => response).then(
+				json2 => {
 					console.log(json2)
-				});
+				}
+			);
+			transcribeStatus.innerHTML = "Your transcription is in process!"
+		} else {
+			console.log("Entered Email is not valid")
+			transcribeStatus.innerHTML = "Entered email is not valid."
+		}
+		transcribeStatus.classList.remove("hidden")
 	})
 	li.appendChild(document.createTextNode (" "))//add a space in between
 	li.appendChild(upload)//add the upload link to li
@@ -218,4 +244,27 @@ function createDownloadLink(blob) {
 	//add the li element to the ol
 	recordingsList.appendChild(li);
 	recordingTitle.classList.remove("hidden")
+}
+
+function languageChanged() {
+	if (languageSelect.value != "English") {
+		infoIcon.classList.remove("hidden")
+	} else {
+		infoIcon.classList.add("hidden")
+	}
+}
+
+function isEmailValid(){
+	var enteredMail = mailInput.value
+	return enteredMail.toLowerCase().match(
+	  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+	)
+};
+
+function validateEmail() {
+	if (isEmailValid()) {
+		mailInput.classList.remove("notValid")
+	} else{
+		mailInput.classList.add("notValid")
+	}
 }
