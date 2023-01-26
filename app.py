@@ -55,5 +55,12 @@ def transcribe_audio():
     print(scp.put("language.json", remote_path="/home/ai-transkriptor/whisper"))
     print(scp.put("audio.wav", remote_path="/home/ai-transkriptor/whisper"))
     
+    while True:
+        try:
+            scp.get("/home/ai-transkriptor/whisper/transcription.txt", "./transcription.txt")
+            break
+        except:
+            time.sleep(1.0)
+    
 
     return 'result["text"]'

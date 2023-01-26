@@ -32,6 +32,7 @@ mailInput.value = ""
 var infoIcon = document.getElementById("infoIcon")
 var transcribeStatus = document.getElementById("transcribeStatus")
 var isRecording = false
+var transcribedTextDiv = document.getElementById("transcribedText")
 
 function startRecording() {
 	console.log("recordButton clicked");
@@ -190,6 +191,7 @@ function createDownloadLink(blob) {
 	var email
 	var msg_string
 	
+	
 	//upload link
 	var upload = document.createElement('a');
 	upload.classList = "bottomButton"
@@ -240,6 +242,8 @@ function createDownloadLink(blob) {
 		}
 		transcribeStatus.classList.add("hidden")
 		transcribeStatus.classList.remove("hidden")
+		
+		check_file()
 	})
 	li.appendChild(document.createTextNode (" "))//add a space in between
 	li.appendChild(upload)//add the upload link to li
@@ -247,6 +251,47 @@ function createDownloadLink(blob) {
 	//add the li element to the ol
 	recordingsList.appendChild(li);
 	recordingTitle.classList.remove("hidden")
+}
+
+
+function readStringFromLocalFile(filepath) {
+    let fileData = "";
+    let rawFile = new XMLHttpRequest();
+    rawFile.open("GET", filepath, false);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+                fileData = rawFile.responseText;
+            }
+        }
+    }
+    rawFile.send(null);
+    return fileData;
+}
+
+var old_text = ""
+var new_text = ""
+
+function iterate_file() {
+	new_text = readStringFromLocalFile("./transcription.txt")
+	if (new_text != old_text) {
+		transcribedTextDiv.innerHTML = new_text
+		transcribeStatus.classList.add("hidden")
+		console.log(old_text)
+		console.log(new_text)
+		return new_text
+	} else {
+		setTimeout(function(){iterate_file()}, 2000)
+	}
+}
+
+function check_file() {
+	old_text = readStringFromLocalFile("./transcription.txt")
+	transcribedTextDiv.innerHTML = ""
+	return iterate_file()
 }
 
 function languageChanged() {
