@@ -41,6 +41,8 @@ body {
   padding-bottom: 10px;
 }
 
+
+
 #infoIcon {
   position: relative;
 }
@@ -84,17 +86,6 @@ body {
   opacity: 1;
 }
 
-#mailInput {
-  outline: 2px solid black;
-  border: none;
-  border-radius: 1px;
-}
-
-#mailInput.notValid {
-  border: none;
-  outline: 2px solid red;
-  border-radius: 1px;
-}
 
 #controls {
   display: flex;
@@ -215,7 +206,9 @@ li {
   padding: 5px 10px;
   margin: 8px 5px;
   border: 0.12em solid rgba(255, 255, 255, 0);
-  background-color: rgb(80, 10, 172);
+  /* background-color: rgb(80, 10, 172); */
+  /* background-color: #007CB2; */
+  background-color: #0074A6;
   border-radius: 2em;
   box-sizing: border-box;
   text-decoration: none;
@@ -250,4 +243,65 @@ li {
   bottom: 0;
   width: 100%;
   height: 40px;
+}
+
+
+
+#mailInput {
+  margin-left: 10px;
+  border: none;
+  -webkit-appearance: none;
+  -ms-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color: white;
+  background: #121212;
+  /* border: 1px solid #303030; */
+  border: 1px solid #787878;
+  border-radius: 30px;
+  padding: 12px;
+  width: 180px;
+  height: 5px;
+  /* font-size: 14px; */
+}
+
+#mailInput:focus {
+  /* background: white; */
+  outline-width: 1px;
+}
+
+#mailInput.notValid {
+  border: none;
+  /* outline: 2px solid red; */
+  border: 1px solid red;
+}
+
+#languageSelect {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin-left: 10px;
+  max-width: fit-content;
+  padding: 5px 35px 5px 5px;
+  border: 1px solid #CCC;
+  height: 30px;
+  color: white;
+  /* background: #121212; */
+  background: #282828;
+  border: 1px solid #303030;
+  border-radius: 30px;
+  padding-left: 14px;
+  padding-right: 24px;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat, repeat;
+    background-position: right .7em top 50%, 0 0;
+    background-size: .65em auto, 100%;
+}
+
+#languageSelect:hover {
+  cursor: pointer;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  opacity: .2; /* Firefox */
 }
