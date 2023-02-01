@@ -236,6 +236,7 @@ function createDownloadLink(blob) {
 				}
 			).catch(error => {console.log(error)});
 			transcribeStatus.innerHTML = "Your transcription is in progress!"
+			transcribeStatus.classList.add("inProgressBlinking")
 		} else {
 			console.log("Entered Email is not valid")
 			transcribeStatus.innerHTML = "Entered email is not valid."
@@ -279,7 +280,8 @@ function iterate_file() {
 	new_text = readStringFromLocalFile("./transcription.txt")
 	if (new_text != old_text) {
 		transcribedTextDiv.innerHTML = new_text
-		transcribeStatus.classList.add("hidden")
+		transcribeStatus.innerHTML = "Your transcription:"
+		transcribeStatus.classList.remove("inProgressBlinking")
 		console.log(old_text)
 		console.log(new_text)
 		return new_text

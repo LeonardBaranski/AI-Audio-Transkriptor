@@ -305,3 +305,8 @@ li {
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
   opacity: .2; /* Firefox */
 }
+
+.inProgressBlinking {
+  animation: blinker3 1s ease-in-out infinite alternate;  
+}
+@keyframes blinker3 { to { opacity: 0; } }
