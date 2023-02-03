@@ -19,8 +19,8 @@
       <div id="languageDiv">
         <label for="language">Select Recording Language: </label>
         <select name="language" id="languageSelect" onchange="languageChanged()">
-          <option value="English" selected>English</option>
-          <option value="Multilingual">Multilingual</option>
+          <option class="languageOption" value="English" selected>English</option>
+          <option class="languageOption" value="Multilingual">Multilingual</option>
         </select>
         <span id="infoIcon" class="hidden">
           &#9432;
@@ -29,7 +29,7 @@
       </div>
       <div id="mailDiv">
         <label for="mail">Enter your email: </label>
-        <input type="text" name="mail" id="mailInput" oninput="validateEmail()"></input>
+        <input type="text" name="mail" id="mailInput" oninput="validateEmail()" placeholder="example@hdm-stuttgart.de"></input>
       </div>
     </div>
     <div id="controls">
